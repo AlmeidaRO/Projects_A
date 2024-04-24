@@ -32,6 +32,16 @@ ui = fluidPage(
   theme = shinythemes::shinytheme('slate'),
   use_notiflix_notify(position = 'right-top', timeout = 5000, closeButton = T, width = '20%'),
   use_notiflix_report(),
+  #tags$style(HTML("
+  #    .shiny-flex-container {
+  #      display: flex;
+  #      flex-wrap: wrap;
+  #    }
+  #    .form-group shiny-input-container {
+  #      display: flex;
+  #      flex-wrap: wrap;
+  #    }"
+  #    ))
 )
 
 #---- Server ----
@@ -69,7 +79,7 @@ server = function(input, output, session){
         div(style = "margin-left: 5%; margin-right: 5%; display: inline-block;
             width: 90%; text-align: center;",
         ),
-        width = 3,
+        width = 4,
         #----- Slots -----
         uiOutput('Statistic_Test_slot_2'),
         uiOutput('Statistic_Test_Load_Data'), uiOutput('Statistic_Test_slot_4'),
@@ -112,10 +122,7 @@ server = function(input, output, session){
             'CRD - One Factor',
             'CRD - Double Factorial',
             'RBD - One Factor',
-            'RBD - Double Factorial',
-            'Split-plots in CRD',
-            'Split-plots in RBD',
-            'Latin Square'
+            'RBD - Double Factorial'
           ),
           selected = 'CRD - One Factor'
         )
@@ -126,7 +133,7 @@ server = function(input, output, session){
   output$Statistic_Test_Load_Data = renderUI({
     #----- ANOVA -----
     div(style = 'margin-left: 1%; margin-right: 1%; display: inline-block;
-        width: 98%; text-align: center; margin-top: -5%; margin-botton: - 15%;',
+        width: 98%; text-align: center; margin-top: 0%; margin-botton: - 15%;',
         fileInput(
           inputId = 'load_data_st_anova', label = NULL, placeholder = 'Upload your csv file',
           accept = '.csv', multiple = F
@@ -156,6 +163,7 @@ server = function(input, output, session){
           tags$br(),tags$br()
       )
     }
+
     #----- CRD - Double Factorial -----
     else if(input$type_st == 'CRD - Double Factorial'){
       Example_File_st_anova_crd_double_factorial = fread(paste0('./Example_Files/st_anova_crd_double_factorial.csv'))
@@ -175,6 +183,7 @@ server = function(input, output, session){
           tags$br(),tags$br()
       )
     }
+
     #----- RBD - One Factor -----
     else if(input$type_st == 'RBD - One Factor'){
       Example_File_st_anova_rbd_one_factor = fread(paste0('./Example_Files/st_anova_rbd_one_factor.csv'))
@@ -194,6 +203,7 @@ server = function(input, output, session){
           tags$br(),tags$br()
       )
     }
+
     #----- RBD - Double Factorial -----
     else if(input$type_st == 'RBD - Double Factorial'){
       Example_File_st_anova_rbd_double_factorial = fread(paste0('./Example_Files/st_anova_rbd_double_factorial.csv'))
@@ -213,63 +223,7 @@ server = function(input, output, session){
           tags$br(),tags$br()
       )
     }
-    #----- Split-plots in CRD -----
-    else if(input$type_st == 'Split-plots in CRD'){
-      Example_File_st_anova_split_plots_in_crd = fread(paste0('./Example_Files/st_anova_split_plots_in_crd.csv'))
-      output$anova_download_data = downloadHandler(
-        filename = 'File_Example.csv',
-        content = function(file){
-          write.csv(Example_File_st_anova_split_plots_in_crd, file, row.names = F, quote = F)
-        }
-      )
-      tags$hr()
-      div(style = 'margin-left: 10%; margin-right: 10%; display: inline-block;
-          width: 80%; text-align: center; color: green; margin-top: -20%; margin-botton: -15%;',
-          downloadLink(
-            outputId = 'anova_download_data',
-            label = tags$span(style = 'color:green', 'File_Example.csv')
-          ),
-          tags$br(),tags$br()
-      )
-    }
-    #----- Split-plots in RBD -----
-    else if(input$type_st == 'Split-plots in RBD'){
-      Example_File_st_anova_split_plots_in_rbd = fread(paste0('./Example_Files/st_anova_split_plots_in_rbd.csv'))
-      output$anova_download_data = downloadHandler(
-        filename = 'File_Example.csv',
-        content = function(file){
-          write.csv(Example_File_st_anova_split_plots_in_rbd, file, row.names = F, quote = F)
-        }
-      )
-      tags$hr()
-      div(style = 'margin-left: 10%; margin-right: 10%; display: inline-block;
-          width: 80%; text-align: center; color: green; margin-top: -20%; margin-botton: -15%;',
-          downloadLink(
-            outputId = 'anova_download_data',
-            label = tags$span(style = 'color:green', 'File_Example.csv')
-          ),
-          tags$br(),tags$br()
-      )
-    }
-    #----- Latin Square -----
-    else if(input$type_st == 'Latin Square'){
-      Example_File_st_anova_latin_square = fread(paste0('./Example_Files/st_anova_latin_square.csv'))
-      output$anova_download_data = downloadHandler(
-        filename = 'File_Example.csv',
-        content = function(file){
-          write.csv(Example_File_st_anova_latin_square, file, row.names = F, quote = F)
-        }
-      )
-      tags$hr()
-      div(style = 'margin-left: 10%; margin-right: 10%; display: inline-block;
-          width: 80%; text-align: center; color: green; margin-top: -20%; margin-botton: -15%;',
-          downloadLink(
-            outputId = 'anova_download_data',
-            label = tags$span(style = 'color:green', 'File_Example.csv')
-          ),
-          tags$br(),tags$br()
-      )
-    }
+
   })
   
   #----- Statistic_Test_slot_5: Report Outliers -----
@@ -384,43 +338,7 @@ server = function(input, output, session){
           )
       )
     }
-    #----- Split-plots in CRD -----
-    else if(input$type_st == 'Split-plots in CRD'){
-      div(style = 'margin-left: 5%; margin-right: 5%; display: inline-block;
-        width: 90%; text-align: center; margin-top: -2%;',
-          selectInput(
-            inputId = 'mcomp_st_anova', label = 'Multi-Comp',
-            choices = list(
-              'Duncan', 'LSD', 'LSDB', 'SK', 'SNK', 'Tukey', 'CCBoot'
-            ), selected = 'Tukey'
-          )
-      )
-    }
-    #----- Split-plots in RBD -----
-    else if(input$type_st == 'Split-plots in RBD'){
-      div(style = 'margin-left: 5%; margin-right: 5%; display: inline-block;
-        width: 90%; text-align: center; margin-top: -2%;',
-          selectInput(
-            inputId = 'mcomp_st_anova', label = 'Multi-Comp',
-            choices = list(
-              'Duncan', 'LSD', 'LSDB', 'SK', 'SNK', 'Tukey', 'CCBoot'
-            ), selected = 'Tukey'
-          )
-      )
-    }
     
-    #----- Latin Square -----
-    else if(input$type_st == 'Latin Square'){
-      div(style = 'margin-left: 5%; margin-right: 5%; display: inline-block;
-        width: 90%; text-align: center; margin-top: -2%;',
-          selectInput(
-            inputId = 'mcomp_st_anova', label = 'Multi-Comp',
-            choices = list(
-              'Duncan', 'LSD', 'LSDB', 'SK', 'SNK', 'Tukey', 'CCBoot'
-            ), selected = 'Tukey'
-          )
-      )
-    }
   })
   
   #----- Statistic_Test_Run_Clear_Buttons -----
@@ -654,15 +572,19 @@ server = function(input, output, session){
     input$run_st_anova, {
       # After click 'RUN', disable options
       observeEvent(input$run_st_anova, {
-        shinyjs::disable('type_st')
-        shinyjs::disable('run_st_anova')
-        shinyjs::enable('clear_st_anova')
+        if(!is.null(rv_st_anova$data)){
+          shinyjs::disable('type_st')
+          shinyjs::disable('run_st_anova')
+          shinyjs::enable('clear_st_anova')
+        }
       })
       # After click 'CLEAR', enable options
       observeEvent(input$clear_st_anova, {
-        shinyjs::enable('type_st')
-        shinyjs::enable('run_st_anova')
-        shinyjs::disable('clear_st_anova')
+        if(is.null(rv_st_anova$data)){
+          shinyjs::enable('type_st')
+          shinyjs::enable('run_st_anova')
+          shinyjs::disable('clear_st_anova')
+        }
       })
       
       # Check Anova option
@@ -1324,509 +1246,6 @@ server = function(input, output, session){
                     nx_report_success('Success!', 'All tasks completed!.')
                   }else{
                     nx_report_error('Treatment Error!', 'Some treatment or block column have just 1 level! See the File Example (You can use it as template).')
-                  }
-                }else{
-                  nx_report_error('Response Error!', 'Response column is not numeric data! See the File Example (You can use it as template).')
-                }
-              }
-              
-            }
-            
-          }
-        )
-        
-      }
-      
-      #----- Split-plots in CRD -----
-      else if(input$type_st == 'Split-plots in CRD'){
-        withProgress(
-          message = 'Processing...', value = 0, {
-            # Check upload process
-            if(is.null(rv_st_anova$data)){
-              nx_report_error('File Error!', 'You need upload a CSV file!')
-            }else{
-              # Read dataset correction
-              if(ncol(rv_st_anova$data) == 1){
-                rv_st_anova$data = fread(input$load_data_st_anova$datapath, header = T, sep = ';', nThread = threads_to_use)
-              }
-              if(ncol(rv_st_anova$data) == 1){
-                rv_st_anova$data = fread(input$load_data_st_anova$datapath, header = T, sep = '\t', nThread = threads_to_use)
-              }
-              InputTab = as.data.frame(rv_st_anova$data)
-              
-              # Check dataset structure p1 >>>>>>> for data with 4 columns! <<<<<<<<
-              if(ncol(InputTab) != 4){
-                nx_report_error('File Error!', 'Your dataset do not have 4 columns! See the File Example (You can use it as template).')
-              }else{
-                status_res = grep(TRUE, is.numeric(InputTab[, 4]))
-                InputTab[, 2] = as.factor(InputTab[, 2])
-                InputTab[, 3] = as.factor(InputTab[, 3])
-                status_treat_1 = unique(InputTab[, 2])
-                status_treat_2 = unique(InputTab[, 3])
-                
-                TempTab = InputTab %>%
-                  spread(names(InputTab)[2], names(InputTab)[4])
-                
-                InputTab_2 = data.frame(Repet = rep(unique(TempTab[, 1])))
-                for(i in 1:length(status_treat_2)){
-                  Temp_New_Tab = subset(TempTab, TempTab[, 2] == status_treat_2[i])[, -c(1:2)]
-                  names(Temp_New_Tab) = stri_join(names(Temp_New_Tab), status_treat_2[i])
-                  InputTab_2 = bind_cols(InputTab_2, Temp_New_Tab)
-                }
-                
-                InputTab_3 = InputTab_2[, -1]
-                
-                # Check dataset structure p2
-                if(length(status_res) == 1){
-                  if(length(status_treat_1) > 1 & length(status_treat_2) > 1){
-                    # Features names to lower and remove whitespace
-                    names(InputTab) = stringi::stri_trans_tolower(names(InputTab))
-                    names(InputTab) = gsub(' ', '_', names(InputTab))
-                    
-                    #>---- Data Table: Input data ----
-                    dt_input_data = reactive({
-                      InputTab_2
-                    })
-                    
-                    output$Tab1_st_anova = DT::renderDataTable({
-                      withProgress(
-                        message = 'Processing...', value = 0, {
-                          dt_input_data()
-                        }
-                      )
-                    }, rownames = F,
-                    options = list(
-                      pageLength = 9, searching = F, lengthChange = F,
-                      columnDefs = list(
-                        list(
-                          targets = '_all', className = 'dt-center'
-                        )
-                      )
-                    )
-                    )
-                    
-                    #>---- EDA - Summary -----
-                    r1 = skimr::skim(InputTab_3)
-                    sink(paste0(temp_folder, '/st_anova_summary.txt'))
-                    print(r1)
-                    sink()
-                    
-                    output$Tab2_st_anova = renderPrint({
-                      withProgress(
-                        message = 'Processing...', value = 0, {
-                          r1
-                        }
-                      )
-                    })
-                    
-                    #>---- EDA - Results -----
-                    results_txt = renderPrint({
-                      ExpDes::split2.crd(InputTab[, 2], InputTab[, 3], InputTab[, 1], InputTab[, 4], quali = c(T, T),
-                                         sigT = as.numeric(input$sigT_st_anova),
-                                         sigF = as.numeric(input$sigF_st_anova),
-                                         mcomp = stringi::stri_trans_tolower(input$mcomp_st_anova),
-                                         c(names(InputTab)[3], names(InputTab)[4])
-                      )
-                    })
-                    
-                    observe({
-                      writeLines(results_txt(), paste0(temp_folder, '/st_anova_results.txt'))
-                    })
-                    
-                    output$Tab3_st_anova = renderText({
-                      withProgress(
-                        message = 'Processing...', value = 0, {
-                          results_txt()
-                        }
-                      )
-                    })
-                    
-                    #>---- EDA - Data Distribution (RainCloud Plot) ----
-                    num_dt = InputTab_3
-                    plist = list()
-                    for(i in 1:ncol(num_dt)){
-                      plist[[i]] = raincloud_numfeat(num_dt, i)
-                      plot(plist[[i]])
-                      dev.off()
-                      pdf(paste0(temp_folder, '/st_anova_', names(num_dt)[i], '_data_distribution.pdf'))
-                      plot(plist[[i]])
-                      dev.off()
-                    }
-                    
-                    output$Tab4_st_anova = renderPlot(
-                      width = 600, height = 400 * (ncol(num_dt) / 2),{
-                        withProgress(
-                          message = 'Processing...', value = 0, {
-                            do.call(grid.arrange, c(plist, ncol = 2))
-                          }
-                        )
-                      })
-                    
-                    #>---- EDA - Report (NA and Outlier detection) -----
-                    Detection_Tab = reactive({
-                      Detection = outlier_index(InputTab_3, input$outlier_iqr_st_anova)
-                      return(Detection)
-                    })
-                    
-                    observe({
-                      fwrite(Detection_Tab(), paste0(temp_folder, '/st_anova_report.csv'), nThread = threads_to_use)
-                    })
-                    
-                    output$Tab5_st_anova = DT::renderDataTable({
-                      withProgress(
-                        message = 'Processing...', value = 0, {
-                          Detection_Tab()
-                        }
-                      )
-                    }, rownames = F,
-                    options = list(
-                      pageLength = 9, searching = F, lengthChange = F,
-                      columnDefs = list(
-                        list(
-                          targets = '_all', className = 'dt-center'
-                        )
-                      )
-                    )
-                    )
-                    
-                    #----- Finish -----
-                    nx_report_success('Success!', 'All tasks completed!.')
-                  }else{
-                    nx_report_error('Treatment Error!', 'Some treatment column have just 1 level! See the File Example (You can use it as template).')
-                  }
-                }else{
-                  nx_report_error('Response Error!', 'Response column is not numeric data! See the File Example (You can use it as template).')
-                }
-              }
-              
-            }
-            
-          }
-        )
-        
-      }
-      
-      #----- Split-plots in RBD -----
-      else if(input$type_st == 'Split-plots in RBD'){
-        withProgress(
-          message = 'Processing...', value = 0, {
-            # Check upload process
-            if(is.null(rv_st_anova$data)){
-              nx_report_error('File Error!', 'You need upload a CSV file!')
-            }else{
-              # Read dataset correction
-              if(ncol(rv_st_anova$data) == 1){
-                rv_st_anova$data = fread(input$load_data_st_anova$datapath, header = T, sep = ';', nThread = threads_to_use)
-              }
-              if(ncol(rv_st_anova$data) == 1){
-                rv_st_anova$data = fread(input$load_data_st_anova$datapath, header = T, sep = '\t', nThread = threads_to_use)
-              }
-              InputTab = as.data.frame(rv_st_anova$data)
-              
-              # Check dataset structure p1 >>>>>>> for data with 5 columns! <<<<<<<<
-              if(ncol(InputTab) != 5){
-                nx_report_error('File Error!', 'Your dataset do not have 5 columns! See the File Example (You can use it as template).')
-              }else{
-                status_res = grep(TRUE, is.numeric(InputTab[, 5]))
-                InputTab[, 2] = as.factor(InputTab[, 2])
-                InputTab[, 3] = as.factor(InputTab[, 3])
-                InputTab[, 4] = as.factor(InputTab[, 4])
-                status_block = unique(InputTab[, 2])
-                status_treat_1 = unique(InputTab[, 3])
-                status_treat_2 = unique(InputTab[, 4])
-                
-                
-                TempTab = InputTab %>%
-                  spread(names(InputTab)[3], names(InputTab)[5])
-                
-                InputTab_2 = data.frame(Repet = rep(unique(TempTab[, 1]), each = length(status_block)), Bl = rep(c(1,2), length(unique(TempTab[, 1]))))
-                for(i in 1:length(status_treat_2)){
-                  Temp_New_Tab = subset(TempTab, TempTab[, 3] == status_treat_2[i])[, -c(1:3)]
-                  names(Temp_New_Tab) = stri_join(names(Temp_New_Tab), status_treat_2[i])
-                  InputTab_2 = bind_cols(InputTab_2, Temp_New_Tab)
-                }
-                InputTab_2 = InputTab_2[order(InputTab_2[, 2]), ]
-                
-                InputTab_3 = InputTab_2[, -1]
-                
-                # Check dataset structure p2
-                if(length(status_res) == 1){
-                  if(length(status_treat_1) > 1 & length(status_treat_2) > 1 & length(status_block) > 1){
-                    # Features names to lower and remove whitespace
-                    names(InputTab) = stringi::stri_trans_tolower(names(InputTab))
-                    names(InputTab) = gsub(' ', '_', names(InputTab))
-                    
-                    #>---- Data Table: Input data ----
-                    dt_input_data = reactive({
-                      InputTab_2
-                    })
-                    
-                    output$Tab1_st_anova = DT::renderDataTable({
-                      withProgress(
-                        message = 'Processing...', value = 0, {
-                          dt_input_data()
-                        }
-                      )
-                    }, rownames = F,
-                    options = list(
-                      pageLength = 9, searching = F, lengthChange = F,
-                      columnDefs = list(
-                        list(
-                          targets = '_all', className = 'dt-center'
-                        )
-                      )
-                    )
-                    )
-                    
-                    #>---- EDA - Summary -----
-                    r1 = skimr::skim(InputTab_3)
-                    sink(paste0(temp_folder, '/st_anova_summary.txt'))
-                    print(r1)
-                    sink()
-                    
-                    output$Tab2_st_anova = renderPrint({
-                      withProgress(
-                        message = 'Processing...', value = 0, {
-                          r1
-                        }
-                      )
-                    })
-                    
-                    #>---- EDA - Results -----
-                    results_txt = renderPrint({
-                      ExpDes::split2.rbd(InputTab[, 3], InputTab[, 4], InputTab[, 2], InputTab[, 5], quali = c(T, T),
-                                         sigT = as.numeric(input$sigT_st_anova),
-                                         sigF = as.numeric(input$sigF_st_anova),
-                                         mcomp = stringi::stri_trans_tolower(input$mcomp_st_anova),
-                                         c(names(InputTab)[3], names(InputTab)[4])
-                      )
-                    })
-                    
-                    observe({
-                      writeLines(results_txt(), paste0(temp_folder, '/st_anova_results.txt'))
-                    })
-                    
-                    output$Tab3_st_anova = renderText({
-                      withProgress(
-                        message = 'Processing...', value = 0, {
-                          results_txt()
-                        }
-                      )
-                    })
-                    
-                    #>---- EDA - Data Distribution (RainCloud Plot) ----
-                    num_dt = InputTab_3
-                    plist = list()
-                    for(i in 1:ncol(num_dt)){
-                      plist[[i]] = raincloud_numfeat(num_dt, i)
-                      plot(plist[[i]])
-                      dev.off()
-                      pdf(paste0(temp_folder, '/st_anova_', names(num_dt)[i], '_data_distribution.pdf'))
-                      plot(plist[[i]])
-                      dev.off()
-                    }
-                    
-                    output$Tab4_st_anova = renderPlot(
-                      width = 600, height = 400 * (ncol(num_dt) / 2),{
-                        withProgress(
-                          message = 'Processing...', value = 0, {
-                            do.call(grid.arrange, c(plist, ncol = 2))
-                          }
-                        )
-                      })
-                    
-                    #>---- EDA - Report (NA and Outlier detection) -----
-                    Detection_Tab = reactive({
-                      Detection = outlier_index(InputTab_3, input$outlier_iqr_st_anova)
-                      return(Detection)
-                    })
-                    
-                    observe({
-                      fwrite(Detection_Tab(), paste0(temp_folder, '/st_anova_report.csv'), nThread = threads_to_use)
-                    })
-                    
-                    output$Tab5_st_anova = DT::renderDataTable({
-                      withProgress(
-                        message = 'Processing...', value = 0, {
-                          Detection_Tab()
-                        }
-                      )
-                    }, rownames = F,
-                    options = list(
-                      pageLength = 9, searching = F, lengthChange = F,
-                      columnDefs = list(
-                        list(
-                          targets = '_all', className = 'dt-center'
-                        )
-                      )
-                    )
-                    )
-                    
-                    #----- Finish -----
-                    nx_report_success('Success!', 'All tasks completed!.')
-                  }else{
-                    nx_report_error('Treatment Error!', 'Some treatment or block column have just 1 level! See the File Example (You can use it as template).')
-                  }
-                }else{
-                  nx_report_error('Response Error!', 'Response column is not numeric data! See the File Example (You can use it as template).')
-                }
-              }
-              
-            }
-            
-          }
-        )
-        
-      }
-      
-      #----- Latin Square -----
-      else if(input$type_st == 'Latin Square'){
-        withProgress(
-          message = 'Processing...', value = 0, {
-            # Check upload process
-            if(is.null(rv_st_anova$data)){
-              nx_report_error('File Error!', 'You need upload a CSV file!')
-            }else{
-              # Read dataset correction
-              if(ncol(rv_st_anova$data) == 1){
-                rv_st_anova$data = fread(input$load_data_st_anova$datapath, header = T, sep = ';', nThread = threads_to_use)
-              }
-              if(ncol(rv_st_anova$data) == 1){
-                rv_st_anova$data = fread(input$load_data_st_anova$datapath, header = T, sep = '\t', nThread = threads_to_use)
-              }
-              InputTab = as.data.frame(rv_st_anova$data)
-              
-              # Check dataset structure p1 >>>>>>> for data with 5 columns! <<<<<<<<
-              if(ncol(InputTab) != 5){
-                nx_report_error('File Error!', 'Your dataset do not have 5 columns! See the File Example (You can use it as template).')
-              }else{
-                status_res = grep(TRUE, is.numeric(InputTab[, 5]))
-                InputTab[, 2] = as.factor(InputTab[, 2])
-                InputTab[, 3] = as.factor(InputTab[, 3])
-                InputTab[, 4] = as.factor(InputTab[, 4])
-                status_treat = unique(InputTab[, 2])
-                
-                InputTab_2 = InputTab %>%
-                  spread(names(InputTab)[2], names(InputTab)[5])
-                
-                InputTab_3 = InputTab_2[, -c(1:3)]
-                
-                # Check dataset structure p2
-                if(length(status_res) == 1){
-                  if(length(status_treat) > 1){
-                    # Features names to lower and remove whitespace
-                    names(InputTab) = stringi::stri_trans_tolower(names(InputTab))
-                    names(InputTab) = gsub(' ', '_', names(InputTab))
-                    
-                    #>---- Data Table: Input data ----
-                    dt_input_data = reactive({
-                      InputTab_2
-                    })
-                    
-                    output$Tab1_st_anova = DT::renderDataTable({
-                      withProgress(
-                        message = 'Processing...', value = 0, {
-                          dt_input_data()
-                        }
-                      )
-                    }, rownames = F,
-                    options = list(
-                      pageLength = 9, searching = F, lengthChange = F,
-                      columnDefs = list(
-                        list(
-                          targets = '_all', className = 'dt-center'
-                        )
-                      )
-                    )
-                    )
-                    
-                    #>---- EDA - Summary -----
-                    r1 = skimr::skim(InputTab_3)
-                    sink(paste0(temp_folder, '/st_anova_summary.txt'))
-                    print(r1)
-                    sink()
-                    
-                    output$Tab2_st_anova = renderPrint({
-                      withProgress(
-                        message = 'Processing...', value = 0, {
-                          r1
-                        }
-                      )
-                    })
-                    
-                    #>---- EDA - Results -----
-                    results_txt = renderPrint({
-                      ExpDes::latsd(InputTab[, 2], InputTab[, 3], InputTab[, 4], InputTab[, 5], quali = T,
-                                    sigT = as.numeric(input$sigT_st_anova),
-                                    sigF = as.numeric(input$sigF_st_anova),
-                                    mcomp = stringi::stri_trans_tolower(input$mcomp_st_anova)
-                      )
-                    })
-                    
-                    observe({
-                      writeLines(results_txt(), paste0(temp_folder, '/st_anova_results.txt'))
-                    })
-                    
-                    output$Tab3_st_anova = renderText({
-                      withProgress(
-                        message = 'Processing...', value = 0, {
-                          results_txt()
-                        }
-                      )
-                    })
-                    
-                    #>---- EDA - Data Distribution (RainCloud Plot) ----
-                    num_dt = InputTab_3
-                    plist = list()
-                    for(i in 1:ncol(num_dt)){
-                      plist[[i]] = raincloud_numfeat(num_dt, i)
-                      plot(plist[[i]])
-                      dev.off()
-                      pdf(paste0(temp_folder, '/st_anova_', names(num_dt)[i], '_data_distribution.pdf'))
-                      plot(plist[[i]])
-                      dev.off()
-                    }
-                    
-                    output$Tab4_st_anova = renderPlot(
-                      width = 600, height = 400 * (ncol(num_dt) / 2),{
-                        withProgress(
-                          message = 'Processing...', value = 0, {
-                            do.call(grid.arrange, c(plist, ncol = 2))
-                          }
-                        )
-                      })
-                    
-                    #>---- EDA - Report (NA and Outlier detection) -----
-                    Detection_Tab = reactive({
-                      Detection = outlier_index(InputTab_3, input$outlier_iqr_st_anova)
-                      return(Detection)
-                    })
-                    
-                    observe({
-                      fwrite(Detection_Tab(), paste0(temp_folder, '/st_anova_report.csv'), nThread = threads_to_use)
-                    })
-                    
-                    output$Tab5_st_anova = DT::renderDataTable({
-                      withProgress(
-                        message = 'Processing...', value = 0, {
-                          Detection_Tab()
-                        }
-                      )
-                    }, rownames = F,
-                    options = list(
-                      pageLength = 9, searching = F, lengthChange = F,
-                      columnDefs = list(
-                        list(
-                          targets = '_all', className = 'dt-center'
-                        )
-                      )
-                    )
-                    )
-                    
-                    #----- Finish -----
-                    nx_report_success('Success!', 'All tasks completed!.')
-                  }else{
-                    nx_report_error('Treatment Error!', 'Treatment column have just 1 level! See the File Example (You can use it as template).')
                   }
                 }else{
                   nx_report_error('Response Error!', 'Response column is not numeric data! See the File Example (You can use it as template).')
