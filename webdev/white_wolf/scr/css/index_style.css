@@ -1,0 +1,82 @@
+body{
+  background-image:url("../images/bg_blood_splatters_white_surface.jpg");
+}
+
+.main-header{
+  color: rgb(10, 10, 10);
+  text-align:center;
+}
+
+.header-main-text {
+  color: rgb(29, 27, 31);
+  text-align: justify;
+  padding: 50px 100px;
+}
+
+.social-media {
+  display: flex;
+  font-size: 0px;
+  margin: 0 500px;
+  gap: 20px;
+}
+
+.social-media a i {
+  color: rgb(131, 24, 24);
+  border: 1px solid black;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  padding: 5px;
+  text-align: center;
+  font-size: 20px;
+  transition: 0.3s;
+  align-items: center;
+}
+
+.social-media a i:hover{
+  color: black;
+  border: 1px solid black;
+  transform: scale(1.2);
+}
+
+.owl-carousel .owl-item img {
+  display: block;
+  width: 17%;
+  float: left;
+  border: 5px solid #fff;
+  border-radius: 20px;
+  margin-left: 54px;
+  margin-right: 35px;
+  margin-top: 15px;
+}
+.slider-item.equal-height.style-6 {
+  background-color: #eee;
+  border-radius: 20px;
+  margin: 10px;
+}
+.cell-right {
+  text-align: center;
+  margin-right: 80px;
+  padding-top: 35px;
+  padding-bottom: 20px;
+}
+.header {
+  font-weight: 600;
+}
+.details.quote {
+  padding: 17px 55px;
+  text-align: justify;
+  text-justify: inter-word;
+}
+.et_right_sidebar #main-content .container:before{
+  display: none;
+}
+#main-content .container {
+  padding-top: 10px;
+}
+i.fa.fa-quote-left {
+  padding: 0px 10px;
+  color: #999;
+}
+
+
